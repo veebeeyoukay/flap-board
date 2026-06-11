@@ -6,6 +6,7 @@ import './styles/tokens.css';
 import './styles/flap.css';
 import './styles/board.css';
 import './styles/settings.css';
+import './styles/polling.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('root element missing');

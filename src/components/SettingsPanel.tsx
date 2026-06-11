@@ -3,6 +3,7 @@ import type { ChangeEvent } from 'react';
 import { useBoardStore } from '../state/store';
 import { parseBoardConfig, SchemaVersionError } from '../schema/boardConfig';
 import { DEMO_CONFIG } from '../schema/demo';
+import { DataSourceEditor } from './DataSourceEditor';
 import type { Align, ThemeKey } from '../schema/types';
 
 interface SettingsPanelProps {
@@ -229,6 +230,11 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             + Add row
           </button>
         </div>
+      </section>
+
+      <section className="settings-section">
+        <h3>Data Source</h3>
+        <DataSourceEditor />
       </section>
 
       <section className="settings-section">

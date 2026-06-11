@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Sandbox } from './Sandbox';
 import { FlapBoard } from './components/FlapBoard';
 import { SettingsPanel } from './components/SettingsPanel';
+import { PollingIndicator } from './components/PollingIndicator';
 import { useBoardStore } from './state/store';
 import { resolvePalette } from './theme/themes';
 import { applyTheme } from './theme/applyTheme';
 import { loadConfig, saveConfig } from './state/persistence';
+import { usePoller } from './hooks/usePoller';
 
 function isSandboxRoute(): boolean {
   if (typeof window === 'undefined') return false;
@@ -15,6 +17,7 @@ function isSandboxRoute(): boolean {
 function App() {
   const theme = useBoardStore((s) => s.config.theme);
   const customTheme = useBoardStore((s) => s.config.customTheme);
+  const polling = useBoardStore((s) => s.config.polling);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
@@ -41,6 +44,8 @@ function App() {
     applyTheme(resolvePalette(theme, customTheme));
   }, [theme, customTheme]);
 
+  usePoller(polling);
+
   if (isSandboxRoute()) return <Sandbox />;
 
   return (
@@ -64,6 +69,7 @@ function App() {
           <SettingsPanel onClose={() => setSettingsOpen(false)} />
         </>
       )}
+      <PollingIndicator />
     </div>
   );
 }

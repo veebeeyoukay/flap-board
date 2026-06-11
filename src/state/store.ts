@@ -5,6 +5,7 @@ import type {
   BoardConfig,
   Column,
   PollingConfig,
+  Row,
   ThemeKey,
   ThemePalette,
 } from '../schema/types';
@@ -30,6 +31,7 @@ interface BoardStore {
   addRow: () => void;
   removeRow: (rowId: string) => void;
   updateRowValue: (rowId: string, columnKey: string, value: string) => void;
+  setRows: (rows: Row[]) => void;
 
   setTheme: (theme: ThemeKey) => void;
   setCustomTheme: (palette: ThemePalette) => void;
@@ -38,7 +40,6 @@ interface BoardStore {
   setCascadeStaggerMs: (ms: number) => void;
 
   setPolling: (p: PollingConfig) => void;
-  setPollingEnabled: (enabled: boolean) => void;
   setPollingStatus: (s: Partial<PollingStatus>) => void;
 
   setSoundEnabled: (b: boolean) => void;
@@ -139,6 +140,7 @@ export const useBoardStore = create<BoardStore>()(
           ),
         },
       })),
+    setRows: (rows) => set((s) => ({ config: { ...s.config, rows } })),
 
     setTheme: (theme) => set((s) => ({ config: { ...s.config, theme } })),
     setCustomTheme: (palette) =>
@@ -150,19 +152,6 @@ export const useBoardStore = create<BoardStore>()(
 
     setPolling: (polling) =>
       set((s) => ({ config: { ...s.config, polling } })),
-    setPollingEnabled: (enabled) =>
-      set((s) => {
-        const current = s.config.polling ?? {
-          enabled: false,
-          url: '',
-          intervalMs: 30_000,
-          authHeader: null,
-          corsProxyUrl: null,
-        };
-        return {
-          config: { ...s.config, polling: { ...current, enabled } },
-        };
-      }),
     setPollingStatus: (patch) =>
       set((s) => ({ pollingStatus: { ...s.pollingStatus, ...patch } })),
 
