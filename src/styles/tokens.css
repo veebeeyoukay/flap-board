@@ -1,0 +1,19 @@
+:root {
+  --cell-w: 56px;
+  --cell-h: 84px;
+
+  --flap-bg: #1a1a1a;
+  --flap-fg: #f4f4ef;
+  --flap-divider: #050505;
+  --flap-shadow: rgba(0, 0, 0, 0.6);
+
+  --page-bg: #0c0c0d;
+  --page-fg: #f4f4ef;
+  --accent: #5fa5b0;
+  --accent-warn: #d4a800;
+
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --flap-ms: 60ms;
+}
