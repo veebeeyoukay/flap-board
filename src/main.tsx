@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './styles/reset.css';
 import './styles/tokens.css';
 import './styles/flap.css';
+import './styles/board.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('root element missing');

@@ -5,9 +5,14 @@ import { flipSequence } from '../animation/flapSequence';
 interface FlapCellProps {
   char: string;
   flapMs?: number;
+  delayMs?: number;
 }
 
-export function FlapCell({ char: targetChar, flapMs = 60 }: FlapCellProps) {
+export function FlapCell({
+  char: targetChar,
+  flapMs = 60,
+  delayMs = 0,
+}: FlapCellProps) {
   const [current, setCurrent] = useState<string>(' ');
   const [pending, setPending] = useState<string | null>(null);
 
@@ -39,7 +44,7 @@ export function FlapCell({ char: targetChar, flapMs = 60 }: FlapCellProps) {
       }, flapMs);
     };
 
-    timerRef.current = window.setTimeout(tick, 0);
+    timerRef.current = window.setTimeout(tick, Math.max(0, delayMs));
 
     return () => {
       cancelled = true;
@@ -48,7 +53,7 @@ export function FlapCell({ char: targetChar, flapMs = 60 }: FlapCellProps) {
         timerRef.current = null;
       }
     };
-  }, [targetChar, flapMs]);
+  }, [targetChar, flapMs, delayMs]);
 
   const topChar = pending ?? current;
   const botChar = current;
@@ -65,10 +70,16 @@ export function FlapCell({ char: targetChar, flapMs = 60 }: FlapCellProps) {
       </div>
       {flipping && (
         <>
-          <div key={`up-${current}-${pending}`} className="flap-leaf flap-leaf-upper">
+          <div
+            key={`up-${current}-${pending}`}
+            className="flap-leaf flap-leaf-upper"
+          >
             <span>{current}</span>
           </div>
-          <div key={`lo-${current}-${pending}`} className="flap-leaf flap-leaf-lower">
+          <div
+            key={`lo-${current}-${pending}`}
+            className="flap-leaf flap-leaf-lower"
+          >
             <span>{pending}</span>
           </div>
         </>
