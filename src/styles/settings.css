@@ -1,0 +1,154 @@
+.settings-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  background: var(--accent);
+  color: var(--page-bg);
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9;
+}
+
+.settings-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(480px, 100vw);
+  background: color-mix(in srgb, var(--page-bg) 92%, white 4%);
+  border-left: 1px solid color-mix(in srgb, var(--page-fg) 18%, transparent);
+  z-index: 10;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--page-fg) 12%, transparent);
+  padding-bottom: 0.6rem;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+}
+
+.settings-header button {
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+  font-size: 1.1rem;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  line-height: 1;
+  border-radius: 3px;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-section h3 {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.field input[type='range'] {
+  width: 100%;
+}
+
+.settings-drawer button[data-active] {
+  background: var(--accent);
+  color: var(--page-bg);
+  border-color: var(--accent);
+}
+
+.col-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.col-row input[type='text'] {
+  flex: 1 1 8em;
+  min-width: 6em;
+}
+
+.rows-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rows-edit details {
+  border: 1px solid color-mix(in srgb, var(--page-fg) 12%, transparent);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+}
+
+.rows-edit summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.row-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--page-fg) 10%, transparent);
+}
+
+.settings-error {
+  color: #ff7a7a;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.settings-footer {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  opacity: 0.6;
+  font-size: 0.8rem;
+  text-align: center;
+}

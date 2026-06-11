@@ -6,12 +6,25 @@ interface FlapCellProps {
   char: string;
   flapMs?: number;
   delayMs?: number;
+  colorOverride?: string;
+}
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined' || !window.matchMedia) return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function buildStyle(flapMs: number, colorOverride: string | undefined): CSSProperties {
+  const base: Record<string, string> = { '--flap-ms': `${flapMs}ms` };
+  if (colorOverride !== undefined) base['--flap-fg'] = colorOverride;
+  return base as unknown as CSSProperties;
 }
 
 export function FlapCell({
   char: targetChar,
   flapMs = 60,
   delayMs = 0,
+  colorOverride,
 }: FlapCellProps) {
   const [current, setCurrent] = useState<string>(' ');
   const [pending, setPending] = useState<string | null>(null);
@@ -25,6 +38,16 @@ export function FlapCell({
   }, [current]);
 
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      queueRef.current = [];
+      const settle = (): void => {
+        setPending(null);
+        setCurrent(targetChar);
+      };
+      const t = window.setTimeout(settle, Math.max(0, delayMs));
+      return () => window.clearTimeout(t);
+    }
+
     queueRef.current = flipSequence(currentRef.current, targetChar);
 
     let cancelled = false;
@@ -58,7 +81,7 @@ export function FlapCell({
   const topChar = pending ?? current;
   const botChar = current;
   const flipping = pending !== null;
-  const cellStyle = { '--flap-ms': `${flapMs}ms` } as CSSProperties;
+  const cellStyle = buildStyle(flapMs, colorOverride);
 
   return (
     <div className="flap-cell" style={cellStyle} aria-label={topChar}>

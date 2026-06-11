@@ -22,6 +22,12 @@ function cumulativeOffsets(columns: Column[]): number[] {
   return out;
 }
 
+function lookupColor(col: Column, rawValue: string): string | undefined {
+  if (col.colorRules === undefined) return undefined;
+  const key = rawValue.toUpperCase().trim();
+  return col.colorRules[key];
+}
+
 export function FlapRow({
   row,
   columns,
@@ -33,12 +39,10 @@ export function FlapRow({
   return (
     <div className="flap-row">
       {columns.map((col, colIdx) => {
-        const padded = padValue(
-          row.values[col.key] ?? '',
-          col.widthChars,
-          col.align
-        );
+        const raw = row.values[col.key] ?? '';
+        const padded = padValue(raw, col.widthChars, col.align);
         const startOffset = offsets[colIdx] ?? 0;
+        const colorOverride = lookupColor(col, raw);
         return (
           <div key={col.key} className="flap-col">
             {Array.from(padded).map((ch, i) => (
@@ -52,6 +56,7 @@ export function FlapRow({
                   cascadeStaggerMs * ROW_STAGGER_MULT,
                   cascadeStaggerMs
                 )}
+                colorOverride={colorOverride}
               />
             ))}
           </div>

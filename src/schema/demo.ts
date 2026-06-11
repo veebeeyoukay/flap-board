@@ -1,5 +1,14 @@
 import type { BoardConfig } from './types';
 
+const STATUS_COLORS: Record<string, string> = {
+  'ON TIME': '#5fff8c',
+  'BOARDING': '#ffd24a',
+  'DELAYED': '#ff8c00',
+  'CANCELLED': '#ff4040',
+  'GATE CHG': '#5fa5b0',
+  'DEPARTED': '#888888',
+};
+
 export const DEMO_CONFIG: BoardConfig = {
   schemaVersion: 'flap-board.v1',
   title: 'DEPARTURES',
@@ -9,7 +18,7 @@ export const DEMO_CONFIG: BoardConfig = {
     { key: 'dest', label: 'DESTINATION', widthChars: 16, align: 'left' },
     { key: 'flight', label: 'FLIGHT', widthChars: 7, align: 'center' },
     { key: 'gate', label: 'GATE', widthChars: 4, align: 'center' },
-    { key: 'status', label: 'STATUS', widthChars: 8, align: 'left' },
+    { key: 'status', label: 'STATUS', widthChars: 8, align: 'left', colorRules: STATUS_COLORS },
   ],
   rows: [
     { id: 'r1', values: { time: '09:15', dest: 'LONDON LHR', flight: 'BA 178', gate: 'A12', status: 'BOARDING' } },
@@ -29,6 +38,7 @@ export const DEMO_CONFIG: BoardConfig = {
   customTheme: null,
   cascadeStaggerMs: 25,
   flapMs: 60,
+  sound: { enabled: false },
 };
 
 export const STATUS_CYCLE = [

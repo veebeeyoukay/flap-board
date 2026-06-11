@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Sandbox } from './Sandbox';
 import { FlapBoard } from './components/FlapBoard';
-import { DemoControls } from './components/DemoControls';
+import { SettingsPanel } from './components/SettingsPanel';
 import { useBoardStore } from './state/store';
 import { resolvePalette } from './theme/themes';
 import { applyTheme } from './theme/applyTheme';
+import { loadConfig, saveConfig } from './state/persistence';
 
 function isSandboxRoute(): boolean {
   if (typeof window === 'undefined') return false;
@@ -14,6 +15,27 @@ function isSandboxRoute(): boolean {
 function App() {
   const theme = useBoardStore((s) => s.config.theme);
   const customTheme = useBoardStore((s) => s.config.customTheme);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadConfig().then((cfg) => {
+      if (!cancelled) useBoardStore.getState().setConfig(cfg);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsub = useBoardStore.subscribe(
+      (s) => s.config,
+      (cfg) => {
+        void saveConfig(cfg);
+      }
+    );
+    return unsub;
+  }, []);
 
   useEffect(() => {
     applyTheme(resolvePalette(theme, customTheme));
@@ -24,7 +46,24 @@ function App() {
   return (
     <div className="board-page">
       <FlapBoard />
-      <DemoControls />
+      <button
+        type="button"
+        className="settings-toggle"
+        onClick={() => setSettingsOpen((v) => !v)}
+        aria-expanded={settingsOpen}
+      >
+        {settingsOpen ? 'Close' : 'Settings'}
+      </button>
+      {settingsOpen && (
+        <>
+          <div
+            className="settings-backdrop"
+            onClick={() => setSettingsOpen(false)}
+            aria-hidden="true"
+          />
+          <SettingsPanel onClose={() => setSettingsOpen(false)} />
+        </>
+      )}
     </div>
   );
 }

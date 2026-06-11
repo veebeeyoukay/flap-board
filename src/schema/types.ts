@@ -17,11 +17,20 @@ export interface Column {
   label: string;
   widthChars: number;
   align: Align;
+  colorRules?: Record<string, string>;
 }
 
 export interface Row {
   id: string;
   values: Record<string, string>;
+}
+
+export interface PollingConfig {
+  enabled: boolean;
+  url: string;
+  intervalMs: number;
+  authHeader: string | null;
+  corsProxyUrl: string | null;
 }
 
 export interface BoardConfig {
@@ -34,4 +43,6 @@ export interface BoardConfig {
   customTheme: ThemePalette | null;
   cascadeStaggerMs: number;
   flapMs: number;
+  polling?: PollingConfig;
+  sound?: { enabled: boolean };
 }
