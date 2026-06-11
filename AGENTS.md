@@ -13,9 +13,15 @@ Web app first (React + Vite + PWA), Capacitor wrap planned for Phase 2.
 | Role | Owner |
 |---|---|
 | Sponsor | Vikas Bhatia (vikas@itsjen.ai) |
-| Build (current) | plan-mm-06 / Claude session — overrode the dev-mm-04 default for this slice |
+| Build | **dev-mm-04** (Q + Woz) — per standing directive |
 | Security review | AKCF (akcf-mm-13) — `cc:akcf` Vikunja label |
 | Coordination | plan-mm-06 — SR + Vikunja + GitHub Issue |
+
+> Slice 1 was built on plan-mm-06 as a one-off (Vikas's "continue" directive
+> when the GitHub repo was empty 2026-06-11). Verified, then ownership returned
+> to dev-mm-04 for slice 2+. plan-mm-06's working copy at
+> `~/Vaults/projects-006/flap-board/` is **inspection-only** from this point —
+> no edits should happen there.
 
 ## Local Contracts
 
