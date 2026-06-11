@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { flipSequence } from '../animation/flapSequence';
+import { playClack } from '../audio/clack';
 
 interface FlapCellProps {
   char: string;
@@ -63,6 +64,7 @@ export function FlapCell({
       timerRef.current = window.setTimeout(() => {
         if (cancelled) return;
         setCurrent(next);
+        playClack();
         tick();
       }, flapMs);
     };

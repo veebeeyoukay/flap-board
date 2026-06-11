@@ -141,6 +141,21 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
       </section>
 
       <section className="settings-section">
+        <h3>Sound</h3>
+        <label className="field-inline">
+          <input
+            type="checkbox"
+            checked={config.sound?.enabled === true}
+            onChange={(e) => store.setSoundEnabled(e.target.checked)}
+          />
+          Play mechanical clack on flips
+        </label>
+        <p className="field-help">
+          Off by default. Requires a user interaction to start on iOS.
+        </p>
+      </section>
+
+      <section className="settings-section">
         <h3>Columns</h3>
         {config.columns.map((col, i) => (
           <div className="col-row" key={col.key}>

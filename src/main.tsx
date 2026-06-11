@@ -7,6 +7,7 @@ import './styles/flap.css';
 import './styles/board.css';
 import './styles/settings.css';
 import './styles/polling.css';
+import './styles/kiosk.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('root element missing');

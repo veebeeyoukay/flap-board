@@ -1,0 +1,38 @@
+.kiosk-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 7rem;
+  z-index: 5;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid currentColor;
+  padding: 0.5em 0.9em;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.kiosk-toggle[data-fullscreen] {
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0.5;
+  font-size: 0.8rem;
+  padding: 0.3em 0.7em;
+}
+
+.kiosk-toggle[data-fullscreen]:hover {
+  opacity: 1;
+}
+
+:fullscreen {
+  background: var(--page-bg);
+}
+
+:fullscreen .settings-toggle {
+  display: none;
+}
+
+:fullscreen .board-page {
+  justify-content: center;
+  padding: 1rem;
+}
