@@ -34,3 +34,13 @@ export async function loadSnapshot(): Promise<Snapshot | null> {
 export async function clearSnapshot(): Promise<void> {
   await getStorage().remove(KEY);
 }
+
+export function mergeRows(existing: Row[], incoming: Row[]): Row[] {
+  const byId = new Map<string, Row>();
+  for (const r of incoming) byId.set(r.id, r);
+  return existing.map((r) => {
+    const upd = byId.get(r.id);
+    if (upd === undefined) return r;
+    return { ...r, values: { ...r.values, ...upd.values } };
+  });
+}

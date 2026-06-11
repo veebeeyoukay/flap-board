@@ -8,6 +8,7 @@ import { useBoardStore } from './state/store';
 import { resolvePalette } from './theme/themes';
 import { applyTheme } from './theme/applyTheme';
 import { loadConfig, saveConfig } from './state/persistence';
+import { loadSnapshot, mergeRows } from './polling/snapshot';
 import { usePoller } from './hooks/usePoller';
 import { setClackEnabled } from './audio/clack';
 
@@ -50,6 +51,19 @@ function App() {
   useEffect(() => {
     setClackEnabled(soundEnabled);
   }, [soundEnabled]);
+
+  useEffect(() => {
+    if (polling?.enabled !== true) return;
+    let cancelled = false;
+    loadSnapshot().then((snap) => {
+      if (cancelled || snap === null) return;
+      const store = useBoardStore.getState();
+      store.setRows(mergeRows(store.config.rows, snap.rows));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [polling?.enabled]);
 
   useEffect(() => {
     if (!settingsOpen) return;

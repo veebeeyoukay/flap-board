@@ -1,19 +1,9 @@
 import { useEffect } from 'react';
 import { Poller } from '../polling/poller';
 import { parsePollResponse } from '../polling/parser';
-import { saveSnapshot } from '../polling/snapshot';
+import { saveSnapshot, mergeRows } from '../polling/snapshot';
 import { useBoardStore } from '../state/store';
-import type { PollingConfig, Row } from '../schema/types';
-
-function mergeRows(existing: Row[], incoming: Row[]): Row[] {
-  const byId = new Map<string, Row>();
-  for (const r of incoming) byId.set(r.id, r);
-  return existing.map((r) => {
-    const upd = byId.get(r.id);
-    if (upd === undefined) return r;
-    return { ...r, values: { ...r.values, ...upd.values } };
-  });
-}
+import type { PollingConfig } from '../schema/types';
 
 export function usePoller(config: PollingConfig | undefined): void {
   const enabled = config?.enabled === true && (config.url ?? '') !== '';
