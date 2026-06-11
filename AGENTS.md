@@ -7,6 +7,8 @@ parent `AGENTS.md` above this file before editing.
 
 A configurable, content-agnostic split-flap display board (Solari-style).
 Web app first (React + Vite + PWA), Capacitor wrap planned for Phase 2.
+See `docs/PROJECT-BRIEF.md` for the original brief and `docs/DECISIONS.md`
+for the locked decisions log.
 
 ## Ownership
 
@@ -17,48 +19,41 @@ Web app first (React + Vite + PWA), Capacitor wrap planned for Phase 2.
 | Security review | AKCF (akcf-mm-13) — `cc:akcf` Vikunja label |
 | Coordination | plan-mm-06 — SR + Vikunja + GitHub Issue |
 
-> Slice 1 was built on plan-mm-06 as a one-off (Vikas's "continue" directive
-> when the GitHub repo was empty 2026-06-11). Verified, then ownership returned
-> to dev-mm-04 for slice 2+. plan-mm-06's working copy at
-> `~/Vaults/projects-006/flap-board/` is **inspection-only** from this point —
-> no edits should happen there.
-
 ## Local Contracts
 
 - **Binding brief:** [GitHub Issue #1](https://github.com/veebeeyoukay/flap-board/issues/1)
   is canonical. Mirror in this repo: `docs/PROJECT-BRIEF.md`.
+- **Schema / docs:** `docs/SCHEMA.md`, `docs/CAPACITOR.md`,
+  `docs/DECISIONS.md`.
 - **Tracking:**
-  - Service Request: `SR-2026-06-10-001` on plan-mm-06 `ops.support_requests`
-  - Vikunja task: id 89 (project 34 = `HitSquad Fleet > 04-Projects > flap-board`)
+  - Service Request: `SR-2026-06-10-001` on plan-mm-06
+    `ops.support_requests`
+  - Vikunja task: id 89 (project 34 = `HitSquad Fleet > 04-Projects >
+    flap-board`)
   - Activity log: per Doctrine §5
-- **Decisions locked (Vikas 2026-06-10):**
-  1. Build on whichever machine the working tree resides
-  2. Clack sound = shipped audio sample (real WAV/MP3, not synthesized)
-  3. URL polling = plain fetch + configurable Authorization header + optional CORS proxy URL
-  4. Service worker = app shell + last polled snapshot
 
 ## Work Guidance
 
 - **TypeScript strict, zero `any`.** Lint must pass on every commit.
 - **No heavy animation libraries.** CSS transforms and React state only.
 - **Persistence goes through `src/storage/index.ts`** — never call
-  `localStorage` directly from app code. Slice 1 ships `LocalStorageImpl`;
+  `localStorage` directly from app code. v0.1.0 ships `LocalStorageImpl`;
   Phase 2 swaps in a Capacitor Preferences implementation with the same
-  interface.
+  interface (see `docs/CAPACITOR.md`).
 - **State management:** Zustand with `subscribeWithSelector`. Do NOT use
-  Zustand's `persist` middleware — persistence belongs to the storage layer
-  so the Capacitor swap stays clean.
-- **Validation at the boundary:** import/export of board configs goes through
-  Zod schemas in `src/schema/` (introduced in slice 3).
+  Zustand's `persist` middleware — persistence belongs to the storage
+  layer so the Capacitor swap stays clean.
+- **Validation at the boundary:** import/export of board configs goes
+  through Zod schemas in `src/schema/boardConfig.ts`.
 - **Schema versioning:** every persisted config carries
-  `schemaVersion: "flap-board.v1"`. Imports with an unknown major version are
-  refused with a clear error.
-- **Theming:** CSS custom properties only. Three baked themes + custom palette
-  — switching theme must not remount any cell.
-- **Accessibility:** honor `prefers-reduced-motion` (cascade skipped, characters
-  jump to final). Settings panel keyboard-accessible.
-- **Per-slice commits:** each of the 7 slices in the brief lands as a single
-  commit (or PR) reviewed by Vikas. Don't bundle slices.
+  `schemaVersion: "flap-board.v1"`. Imports with an unknown version are
+  refused via `SchemaVersionError` with a clear message.
+- **Theming:** CSS custom properties only. Switching theme must not
+  remount any cell.
+- **Accessibility:** honor `prefers-reduced-motion`. Settings panel
+  keyboard-accessible (Escape closes drawer).
+- **Per-slice commits:** historical — v0.1.0 shipped 7 slices, each a
+  single commit. Future changes follow the same one-thing-per-commit rule.
 
 ## Verification
 
@@ -68,12 +63,13 @@ Before committing:
 - `pnpm build` — zero TypeScript errors, zero warnings
 - `pnpm test` — all Vitest specs green
 
-Before declaring a slice done:
+Before declaring a release done:
 
-- The slice's BDD acceptance criteria (in `docs/PROJECT-BRIEF.md` and Issue #1)
-  all pass
+- The release's BDD acceptance criteria all pass
 - Vikas has confirmed in-browser behavior matches the criteria
+- README, SCHEMA, CAPACITOR, DECISIONS docs reflect the shipped code
 
 ## Child DOX Index
 
-(None yet — add child `AGENTS.md` files as folders become durable boundaries.)
+(None yet — add child `AGENTS.md` files as folders become durable
+boundaries.)
